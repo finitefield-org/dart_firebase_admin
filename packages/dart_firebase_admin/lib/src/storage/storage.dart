@@ -19,7 +19,18 @@ class Storage {
 
   late final _client = _StorageHttpClient(app);
 
-  Future<void> upload(storage1.Object object, String bucket) async {
+  Future<void> upload({
+    required String bucket,
+    required String name,
+    required Uint8List data,
+  }) async {
+    final object = storage1.Object(
+      name: name,
+    );
+    storage1.Media(
+      Stream.value(data),
+      data.length,
+    );
     await _client.v1((client) async {
       await client.objects.insert(object, bucket);
     });
